@@ -1,22 +1,19 @@
 function updateDateTime () {
     var dateTime = new Date();
 
-    const hoursSpan = document.getElementById('hour'); //Hours and eval time 'suffix'
+    const hoursSpan = document.getElementById('hour'); //Hours 
     var hours = dateTime.getHours();
     var timeSuffix = 'PM';
-    if (hours < 10) 
-        {
-            timeSuffix = 'AM';
-        };
-
+    if (hours < 12) timeSuffix = 'AM';
     if (hours > 12) 
     {
         hours -= 12;
         timeSuffix = 'PM';
     };
     hoursSpan.textContent = hours;
+    if (hours == 0) timeSuffix = hoursSpan.textContent = 12;
 
-    const suffixSpan = document.getElementById('suffix'); //Display time 'suffix'
+    const suffixSpan = document.getElementById('suffix');
     suffixSpan.textContent = ' ' + timeSuffix;
 
     const minutesSpan = document.getElementById('minute'); //Minutes
@@ -108,5 +105,5 @@ function updateDateTime () {
     yearSpan.textContent = dateTime.getFullYear();
 } ;
 
-setInterval(updateDateTime, 1000); //Run function that evals and displays date and time every 1 second
+setInterval(updateDateTime, 1000); 
 
