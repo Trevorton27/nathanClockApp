@@ -95,6 +95,10 @@ function updateDateTime () {
             break;
         case 21 : dateSpan.textContent = dates + 'st'
             break;
+        case 22 : dateSpan.textContent = dates + 'nd'
+            break;
+        case 23 : dateSpan.textContent = dates + 'rd'
+            break;
         case 31 : dateSpan.textContent = dates + 'st'
             break;
         default :
