@@ -1,113 +1,83 @@
-function updateDateTime () {
-    var dateTime = new Date();
+function showTime() {
+  const theTime = new Date();
 
-    const hoursSpan = document.getElementById('hour'); //Hours 
-    var hours = dateTime.getHours();
-    var timeSuffix = 'PM';
-    if (hours < 12) timeSuffix = 'AM';
-    if (hours > 12) 
-    {
-        hours -= 12;
-        timeSuffix = 'PM';
-    };
-    hoursSpan.textContent = hours;
-    if (hours == 0) timeSuffix = hoursSpan.textContent = 12;
+  const hour = theTime.getHours();
+  const minutes = addLeadingZero(theTime.getMinutes());
+  const seconds = addLeadingZero(theTime.getSeconds());
+  const isAm = hour < 12 || hour === 0;
+  let amPm = isAm ? 'AM' : 'PM';
 
-    const suffixSpan = document.getElementById('suffix');
-    suffixSpan.textContent = ' ' + timeSuffix;
+  document.getElementById('time').textContent = `${formatHour(
+    hour
+  )}:${minutes}:${seconds} ${amPm}`;
+}
 
-    const minutesSpan = document.getElementById('minute'); //Minutes
-    var minutes = dateTime.getMinutes();
-    if (minutes < 10) 
-        {
-            var tempMin = minutes;
-            minutes = '0' + tempMin; 
-        };
-    minutesSpan.textContent = minutes;
+function addLeadingZero(number) {
+  return number < 10 ? '0' + number : number;
+}
 
-    const secondsSpan = document.getElementById('second'); //Seconds
-    var seconds = dateTime.getSeconds();
-    if (seconds < 10) {
-        var tempSec = seconds;
-        seconds = '0' + tempSec; };
-    secondsSpan.textContent = seconds;
+function formatHour(hour) {
+  hour = hour >= 13 ? hour - 12 : hour;
 
-    const daySpan = document.getElementById('day'); //Day
-    var days = dateTime.getDay();
-        switch (days) {
-            case 1 : daySpan.textContent = 'Monday'
-                break;
-            case 2 : daySpan.textContent = 'Tuesday'
-                break;
-            case 3 : daySpan.textContent = 'Wednesday'
-                break;
-            case 4 : daySpan.textContent = 'Thursday'
-                break;
-            case 5 : daySpan.textContent = 'Friday'
-                break;
-            case 6 : daySpan.textContent = 'Saturday'
-                break;
-            case 7 : daySpan.textContent = 'Sunday'
-                break;
-            default : daySpan.textContent = 'Undefined'
-        };
+  hour = hour === 0 ? hour + 12 : hour;
+  return hour;
+}
 
-    const monthSpan = document.getElementById('month'); //Month
-    var months = dateTime.getMonth();
-    switch (months) 
-    {
-        case 0 : monthSpan.textContent = 'January'
-            break;
-        case 1 : monthSpan.textContent = 'February'
-            break;
-        case 2 : monthSpan.textContent = 'March'
-            break;
-        case 3 : monthSpan.textContent = 'April'
-            break;
-        case 4 : monthSpan.textContent = 'May'
-            break;
-        case 5 : monthSpan.textContent = 'June'
-            break;
-        case 6 : monthSpan.textContent = 'July'
-            break;
-        case 7 : monthSpan.textContent = 'August'
-            break;
-        case 8 : monthSpan.textContent = 'September'
-            break;
-        case 9 : monthSpan.textContent = 'October'
-            break;
-        case 10 : monthSpan.textContent = 'November'
-            break;
-        case 11 : monthSpan.textContent = 'December'
-            break;
-        default : monthSpan.textContent = 'Undefined'
+function showDate() {
+  const theDate = new Date();
+
+  const day = days[theDate.getDay()];
+  const month = months[theDate.getMonth()];
+  const dateToday = theDate.getDate();
+  const year = theDate.getFullYear();
+
+  document.getElementById(
+    'date'
+  ).innerText = `${day}, ${month} ${formatDateSuffix(dateToday)} ${year}`;
+}
+
+function formatDateSuffix(date) {
+  if (date < 10 || date > 20) {
+    switch (date % 10) {
+      case 1:
+        return `${date}st`;
+      case 2:
+        return `${date}nd`;
+      case 3:
+        return `${date}rd`;
     }
+  }
+  return `${date}th`;
+}
 
-    const dateSpan = document.getElementById('date'); //Date
-    var dates = dateTime.getDate();
-    switch (dates) 
-    {
-        case 1 : dateSpan.textContent = dates + 'st'
-            break;
-        case 2 : dateSpan.textContent = dates + 'nd'
-            break;
-        case 3 : dateSpan.textContent = dates + 'rd'
-            break;
-        case 21 : dateSpan.textContent = dates + 'st'
-            break;
-        case 22 : dateSpan.textContent = dates + 'nd'
-            break;
-        case 23 : dateSpan.textContent = dates + 'rd'
-            break;
-        case 31 : dateSpan.textContent = dates + 'st'
-            break;
-        default :
-            dateSpan.textContent = dates + 'th'
-    };
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+const days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+];
 
-    const yearSpan = document.getElementById('year'); //Year
-    yearSpan.textContent = dateTime.getFullYear();
-} ;
+showTime();
+showDate();
 
-setInterval(updateDateTime, 1000); 
-
+setInterval(() => {
+  showTime();
+  showDate();
+}, 1000);
